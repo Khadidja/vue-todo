@@ -10,6 +10,7 @@
 import Header from "./components/layout/Header";
 import AddTodo from "./components/AddTodo";
 import Todos from "./components/Todos";
+import axios from "axios";
 
 export default {
   name: "app",
@@ -20,32 +21,34 @@ export default {
   },
   data() {
     return {
-      todos: [
-        {
-          id: 1,
-          title: "Get coffee",
-          completed: true
-        },
-        {
-          id: 2,
-          title: "Create a REST API with Restify",
-          completed: true
-        },
-        {
-          id: 3,
-          title: "Start learning Vue Js",
-          completed: false
-        }
-      ]
+      todos: []
     };
   },
   methods: {
     deleteTodo(id) {
-      this.todos = this.todos.filter(e => e.id !== id);
+      axios
+        .delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+        .then(res => (this.todos = this.todos.filter(e => e.id !== id)))
+        .catch(err => console.log(err));
     },
     addTodo(newTodo) {
-      this.todos = [...this.todos, newTodo];
+      const { title, completed } = newTodo;
+      axios
+        .post("https://jsonplaceholder.typicode.com/todos", {
+          title,
+          completed
+        })
+        .then(res => (this.todos = [...this.todos, res.data]))
+        .catch(err => console.log(err));
     }
+  },
+  created() {
+    axios
+      .get("https://jsonplaceholder.typicode.com/todos?_limit=2")
+      .then(res => {
+        this.todos = res.data;
+      })
+      .catch(err => console.log(err));
   }
 };
 </script>
