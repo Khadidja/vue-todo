@@ -1,11 +1,9 @@
 <template>
-  <div class="todo-item" v-bind:class="{'completed':todo.completed}">
-    <p>
-      <input type="checkbox" checked v-if="todo.completed" v-on:change="markCompleted">
-      <input type="checkbox" v-else v-on:change="markCompleted">
-      {{todo.title}}
-      <button @click="$emit('delete-todo', todo.id)" class="btn-delete">X</button>
-    </p>
+  <div class="todo-item">
+    <input type="checkbox" checked v-if="todo.completed" v-on:change="markCompleted">
+    <input type="checkbox" v-else v-on:change="markCompleted">
+    <p v-bind:class="{'completed':todo.completed}">{{todo.title}}</p>
+    <button @click="$emit('delete-todo', todo.id)" class="btn-delete">X</button>
   </div>
 </template>
 
@@ -23,19 +21,36 @@ export default {
 
 <style scoped>
 .todo-item {
-  border-bottom: solid 1px;
+  border-bottom: solid 1px #d3d3d3;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: space-between;
 }
 .todo-item:hover {
-  background: #d3d3d3;
+  background: #bfd5e2;
 }
+
 .completed {
   text-decoration: line-through;
+  text-decoration-color: #474953;
 }
 
 .btn-delete {
-  background: red;
-  color: white;
-  padding: 0.2rem;
+  background: #baa7b0;
+  color: black;
+  padding: 0.3rem;
+  margin: 1rem;
   font-weight: bold;
+}
+
+.btn-delete:hover {
+  background: red;
+  color: black;
+}
+
+input[type="checkbox"] {
+  margin: 1rem;
 }
 </style>
